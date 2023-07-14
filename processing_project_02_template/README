@@ -1,0 +1,18 @@
+# Notes
+    - This is a template code for Project_02.
+    - You MAY or MAY NOT use it
+        - The places marked with "[TODO: INSERT CODE HERE]" are NOT the only places where you may need to write code. ie: there might be other places.
+    - However, please follow the submission instructions found in the overleaf link for Project_02.
+        - link: https://www.overleaf.com/read/ctkqpsyykdtq
+        - eg: the format of input and output files
+        - the behavior of the program
+
+# How to run
+    - Open the processing IDE and 'open' the file 'processing_project_02_template.pde'
+    - Press the 'Play' button
+    - Select the 'input.txt' file
+    - After done, please check 'output.txt'
+
+# Comment:
+    - If there is any question or concern or bug, please contact moyeen@arizona.edu.
+    - You are also welcome to stop by during office hours and I will be happy to be of any assistance!

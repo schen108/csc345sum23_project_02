@@ -1,0 +1,20 @@
+processQueries(): 
+q: % horizontal lines
+q: i 20 5 8 5
+q: i 22 6 10 6
+q: i 10 8 20 8
+q: i 6 9 7 9
+q: % vertical lines
+q: i 8 11 8 19
+q: i 26 10 26 19
+q: % diagonal lines
+q: i 21 18 17 13
+q: i 3 27 15 19
+q: % Q(10, 10)
+q: Q 10 29
+visibleEndPoints: 
+visibleEndPoints.size(): 4
+eid: 5.1
+eid: 6.0
+eid: 7.0
+eid: 7.1

@@ -1,0 +1,13 @@
+% horizontal lines
+i 20 5 8 5
+i 22 6 10 6
+i 10 8 20 8
+i 6 9 7 9
+% vertical lines
+i 8 11 8 19
+i 26 10 26 19
+% diagonal lines
+i 21 18 17 13
+i 3 27 15 19
+% Q(10, 10)
+Q 10 29
