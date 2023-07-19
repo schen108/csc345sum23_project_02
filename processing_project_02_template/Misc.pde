@@ -39,7 +39,9 @@ static int CUR_ANIMATION_MODE = 0; // 0: off, 1: on
 // static int CUR_ANIMATION_MODE = 1;
     // [todo:mn] make it 0
 
-static char CUR_INPUT_MODE = 'u'; // i, r, c // 'u' unknown
+static char CUR_INPUT_MODE = 'l'; // i, r, c // 'u' unknown
+    // 'l' line insert
+    // 'q' point insert
 // static char CUR_INPUT_MODE = 'r'; // [todo:mn] comment out
 
 // int MOUSE_CLICK_COUNT_IN_MODE_i  = 0;

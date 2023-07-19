@@ -47,6 +47,9 @@ HorizontalLineSegment hlsFromMouseClick = null;
 int MODE_R_MOUSE_CLICK_COUNT = 0;
 Point clickedBottomLeftPoint;
 Point clickedTopRightPoint;
+int MODE_I_MOUSE_CLICK_COUNT = 0;
+Point clickedFirstPointOfLineSegment;
+Point clickedSecondPointOfLineSegment;
 // ArrayList<Rectangle> toBeAnimatedRectList = new ArrayList();
 
 void settings() {
@@ -116,7 +119,7 @@ void customDraw() {
     refreshGuiVariables();
 
     // task: draw the status bar
-    // drawStatusBar();
+    drawStatusBar();
     
     // task: drawing the 2^h x 2^h grid
     draw2dGrid();
@@ -171,11 +174,13 @@ void customDraw() {
 }
 
 void refreshGuiVariables() {
-    if(CUR_ANIMATION_MODE == 0) {
-        currentStatusBarTextLine1 = ANIMATION_MODE_OFF_TEXT;
-    } else if(CUR_ANIMATION_MODE == 1) {
-        currentStatusBarTextLine1 = ANIMATION_MODE_ON_TEXT;
-    }
+    // if(CUR_ANIMATION_MODE == 0) {
+    //     currentStatusBarTextLine1 = ANIMATION_MODE_OFF_TEXT;
+    // } else if(CUR_ANIMATION_MODE == 1) {
+    //     currentStatusBarTextLine1 = ANIMATION_MODE_ON_TEXT;
+    // }
+    //
+    currentStatusBarTextLine1 = "";
 }
 
 // void updateQuadTreeRelatedGraphicsData() {
@@ -189,7 +194,8 @@ void refreshGuiVariables() {
 void drawStatusBar() {
     textAlign(LEFT, BOTTOM);
     text(
-        currentStatusBarTextLine1 + ", " + currentStatusBarTextLine2,
+        // currentStatusBarTextLine1 + ", " + currentStatusBarTextLine2,
+        currentStatusBarTextLine2,
         s(0),
         s(grid_side_length)
        );
@@ -506,10 +512,11 @@ void processQueries() {
                 secondEndPoint
             );
             
-            // List<Point> visibleEndPoints = visibilityChecker.query(pointQ);
-            List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(pointQ);
+            visibilityChecker.setInputEndpointsList(allEndPointsList);
+            // naive query
+            List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
 
-            //
+            
             output.println("visibleEndPoints: ");
             output.println("visibleEndPoints.size(): " + visibleEndPoints.size());
             for(EndPoint visibleEndpoint : visibleEndPoints) {
@@ -518,6 +525,11 @@ void processQueries() {
 
             // task: showing the visible points by drawing some blue lines from Q to those points
             currentVisibleEndPoints = visibleEndPoints;
+            
+            // actual query
+            // visibilityChecker.query(currentQueryPointQ);
+
+
             
             
             continue;
@@ -556,15 +568,12 @@ void keyPressed() {
         // task: clean up
         // toBeAnimatedRectList = new ArrayList();
 
-    } else if (key == 'i') {
-        CUR_INPUT_MODE = 'i';
-        currentStatusBarTextLine2 = changeModeString(currentStatusBarTextLine2, 'i');
-    } else if (key == 'r') {
-        CUR_INPUT_MODE = 'r';
-        currentStatusBarTextLine2 = changeModeString(currentStatusBarTextLine2, 'r');
-    } else if (key == 'c') {
-        CUR_INPUT_MODE = 'c';
-        currentStatusBarTextLine2 = changeModeString(currentStatusBarTextLine2, 'c');
+    } else if (key == 'l') {
+        CUR_INPUT_MODE = 'l';
+        currentStatusBarTextLine2 = changeModeString(currentStatusBarTextLine2, 'l');
+    } else if (key == 'q') {
+        CUR_INPUT_MODE = 'q';
+        currentStatusBarTextLine2 = changeModeString(currentStatusBarTextLine2, 'q');
     }
     println("CUR_INPUT_MODE: " + CUR_INPUT_MODE);
 }
@@ -591,51 +600,68 @@ void mousePressed() {
     savedMouseX = (int) sr(mouseX);
     savedMouseY = (int) sr(mouseY);
     
-    if (CUR_INPUT_MODE == 'i') {
-        // task: saving data to draw a small circle around this mouse click location
-        isDrawnTempCircleOnMouseClickPosition = false;
-        
-        // // task: insert the point (ie: a degenerate line) in qt
-        // LineSegment lineSegment = new LineSegment(
-        //     inputLSList.size(),
-        //     new EndPoint(inputLSList.size(), 0, savedMouseX, savedMouseY),
-        //     new EndPoint(inputLSList.size(), 1, savedMouseX, savedMouseY)
-        //    );
-        
-        // inputLSList.add(lineSegment);
-        // println("inputLSList.size(): " + inputLSList.size());
-        //
-        // qt.insertSegment(hls.getLineId());
-        // output.println("qt.getEndPointCountInQt(): " + qt.getEndPointCountInQt());
-        
-        // println("mouseX: " + mouseX + ", mouseY: " + mouseY);
-    } else if (CUR_INPUT_MODE == 'r') {        
+    if (CUR_INPUT_MODE == 'l') {
+        // line insertion
+
         // task: take two mouse clicks as input
-        if (MODE_R_MOUSE_CLICK_COUNT == 0) {
-            MODE_R_MOUSE_CLICK_COUNT += 1;
+        if (MODE_I_MOUSE_CLICK_COUNT == 0) {
+            MODE_I_MOUSE_CLICK_COUNT += 1;
             
-            // task: read the bottom left point of Q
-            clickedBottomLeftPoint = new Point(savedMouseX, savedMouseY);
+            // task: read the 1st end point of a new gui based input line segment
+            clickedFirstPointOfLineSegment = new Point(savedMouseX, savedMouseY);
         }
-        else if (MODE_R_MOUSE_CLICK_COUNT == 1) {
-            // task: read the top right point of Q
-            clickedTopRightPoint = new Point(savedMouseX, savedMouseY);
+        else if (MODE_I_MOUSE_CLICK_COUNT == 1) {
+            // task: read the 2nd end point of a new gui based input line segment
+            clickedSecondPointOfLineSegment = new Point(savedMouseX, savedMouseY);
             
-            // task: help draw Q
-            // queryRectangle = new Rectangle(
-            //     clickedBottomLeftPoint,
-            //     clickedTopRightPoint
-            //    );
+            MODE_I_MOUSE_CLICK_COUNT = 0;
+
+
+            EndPoint endpoint0 = new EndPoint(
+                    inputLSList.size(),
+                    0,
+                    clickedFirstPointOfLineSegment.getX(),
+                    clickedFirstPointOfLineSegment.getY()
+            );
+            EndPoint endpoint1 = new EndPoint(
+                    inputLSList.size(),
+                    1,
+                    clickedSecondPointOfLineSegment.getX(),
+                    clickedSecondPointOfLineSegment.getY()
+            );
+
+            // creating and adding this line segment
+            LineSegment lineSegment = new LineSegment(
+                inputLSList.size(),
+                endpoint0,
+                endpoint1
+            );
+
+            allEndPointsList.add(endpoint0);
+            allEndPointsList.add(endpoint1);
+
+            inputLSList.add(lineSegment);
+            // println("inputLSList.size(): " + inputLSList.size());
             
+            visibilityChecker.setInputEndpointsList(allEndPointsList);
+            // using old/current Q
+            List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
             
-            // // task: run report()
-            // qt.rangeReporting(
-            //     queryRectangle
-            // );
-            
-            // reset
-            MODE_R_MOUSE_CLICK_COUNT = 0;
+            // output.println("visibleEndPoints: ");
+            // output.println("visibleEndPoints.size(): " + visibleEndPoints.size());
+            // for(EndPoint visibleEndpoint : visibleEndPoints) {
+            //     output.println(visibleEndpoint.toString());
+            // }
+
+            // task: showing the visible points by drawing some blue lines from Q to those points
+            currentVisibleEndPoints = visibleEndPoints;
         }
+    }  else if (CUR_INPUT_MODE == 'q') {        
+        currentQueryPointQ = new Point(savedMouseX, savedMouseY);
+
+        visibilityChecker.setInputEndpointsList(allEndPointsList);
         
+        List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
+        currentVisibleEndPoints = visibleEndPoints;
     }
 }

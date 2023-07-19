@@ -326,3 +326,27 @@ public Point intersection(LineSegment ls_a, LineSegment ls_b) {
 
         return new Point(xi, yi);
 }
+
+
+void testAngle() {
+    float x1 = 100; // Replace these values with your desired point's x and y coordinates
+    float y1 = 200;
+
+    float x2 = 300; // Replace these values with the origin point's x and y coordinates
+    float y2 = 200;
+
+    float angle = computeAngle(x1 - x2, y1 - y2);
+    println("Angle between 0 and 360 degrees: " + angle);
+}
+
+// Function to compute the angle between 0 and 360 degrees
+float computeAngle(float x, float y) {
+    float angleRad = atan2(y, x); // Step 1: Get angle in radians between -180 and 180
+    float angleDeg = degrees(angleRad); // Step 2: Convert radians to degrees
+
+    if (angleDeg < 0) {
+        angleDeg += 360; // Step 3: Map the angle to the range 0 to 360 degrees
+    }
+
+  return angleDeg;
+}
