@@ -648,11 +648,11 @@ void mousePressed() {
             // using old/current Q
             List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
             
-            // output.println("visibleEndPoints: ");
-            // output.println("visibleEndPoints.size(): " + visibleEndPoints.size());
-            // for(EndPoint visibleEndpoint : visibleEndPoints) {
-            //     output.println(visibleEndpoint.toString());
-            // }
+             output.println("visibleEndPoints: ");
+             output.println("visibleEndPoints.size(): " + visibleEndPoints.size());
+             for(EndPoint visibleEndpoint : visibleEndPoints) {
+                 output.println(visibleEndpoint.toString());
+             }
 
             // task: showing the visible points by drawing some blue lines from Q to those points
             currentVisibleEndPoints = visibleEndPoints;
@@ -663,6 +663,13 @@ void mousePressed() {
         visibilityChecker.setInputEndpointsList(allEndPointsList);
         
         List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
+        
+         output.println("visibleEndPoints: ");
+         output.println("visibleEndPoints.size(): " + visibleEndPoints.size());
+         for(EndPoint visibleEndpoint : visibleEndPoints) {
+                 output.println(visibleEndpoint.toString());
+             }
+        
         currentVisibleEndPoints = visibleEndPoints;
     }
 }
