@@ -641,6 +641,7 @@ void mousePressed() {
             allEndPointsList.add(endpoint1);
 
             inputLSList.add(lineSegment);
+            visibilityChecker.addToInputLineSegmentList(lineSegment);
             // println("inputLSList.size(): " + inputLSList.size());
             
             visibilityChecker.setInputEndpointsList(allEndPointsList);
