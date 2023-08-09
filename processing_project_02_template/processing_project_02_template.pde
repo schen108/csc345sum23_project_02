@@ -634,6 +634,12 @@ void mousePressed() {
                     clickedSecondPointOfLineSegment.getY()
             );
 
+            // Output mouse inputted line segments
+            output.println("Mouse inputted line segment: " + clickedFirstPointOfLineSegment.getX() +" " + clickedFirstPointOfLineSegment.getY() + " " + 
+                            clickedSecondPointOfLineSegment.getX() + " " +
+                            clickedSecondPointOfLineSegment.getY());
+            output.flush();
+            
             // creating and adding this line segment
             LineSegment lineSegment = new LineSegment(
                 inputLSList.size(),
@@ -661,11 +667,13 @@ void mousePressed() {
     }  else if (CUR_INPUT_MODE == 'q') {        
         currentQueryPointQ = new Point(savedMouseX, savedMouseY);
 
+
+
         visibilityChecker.setInputEndpointsList(allEndPointsList);
         
         List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
         
-         outputVisibleEndPoints(visibleEndPoints);
+        outputVisibleEndPoints(visibleEndPoints);
 
         
         currentVisibleEndPoints = visibleEndPoints;
