@@ -516,12 +516,7 @@ void processQueries() {
             // naive query
             List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
 
-            
-            output.println("visibleEndPoints: ");
-            output.println("visibleEndPoints.size(): " + visibleEndPoints.size());
-            for(EndPoint visibleEndpoint : visibleEndPoints) {
-                output.println(visibleEndpoint.toString());
-            }
+            outputVisibleEndPoints(visibleEndPoints);
 
             // task: showing the visible points by drawing some blue lines from Q to those points
             currentVisibleEndPoints = visibleEndPoints;
@@ -536,6 +531,15 @@ void processQueries() {
         }
     }
 }
+
+void outputVisibleEndPoints(List<EndPoint> visibleEndPoints) {
+
+    output.println(visibleEndPoints.size() + " visibleEndPoints: ");
+    for(EndPoint visibleEndpoint : visibleEndPoints) {
+        output.println(visibleEndpoint.toString());
+    }
+}
+
 // void keyPressed() {
 //     output.flush();  // Writes the remaining data to the file
 //     output.close();  // Finishes the file
@@ -648,11 +652,8 @@ void mousePressed() {
             // using old/current Q
             List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
             
-             output.println("visibleEndPoints: ");
-             output.println("visibleEndPoints.size(): " + visibleEndPoints.size());
-             for(EndPoint visibleEndpoint : visibleEndPoints) {
-                 output.println(visibleEndpoint.toString());
-             }
+            outputVisibleEndPoints(visibleEndPoints);
+
 
             // task: showing the visible points by drawing some blue lines from Q to those points
             currentVisibleEndPoints = visibleEndPoints;
@@ -664,11 +665,8 @@ void mousePressed() {
         
         List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
         
-         output.println("visibleEndPoints: ");
-         output.println("visibleEndPoints.size(): " + visibleEndPoints.size());
-         for(EndPoint visibleEndpoint : visibleEndPoints) {
-                 output.println(visibleEndpoint.toString());
-             }
+         outputVisibleEndPoints(visibleEndPoints);
+
         
         currentVisibleEndPoints = visibleEndPoints;
     }
