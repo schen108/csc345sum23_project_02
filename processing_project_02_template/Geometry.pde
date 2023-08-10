@@ -68,6 +68,11 @@ class EndPoint extends Point implements Comparable<EndPoint> {
         return this.endPointId;
     }
     
+    public EndPoint getOtherEndPoint() {
+        LineSegment ls = inputLSList.get(lineId);
+        return this.endPointId == 0 ? ls.getSecondEndPoint() : ls.getFirstEndPoint();
+    }
+    
     //
     @Override
     public int compareTo(EndPoint endpointR) {
@@ -142,6 +147,11 @@ class LineSegment {
     public void setSecondEndPoint(EndPoint secondEndPoint) {
         this.secondEndPoint = secondEndPoint;
     }
+    
+    public float getLength() {
+        return sqrt(pow(2,(firstEndPoint.getX() - secondEndPoint.getX())) + pow(2,(firstEndPoint.getY() - secondEndPoint.getY())));
+    }
+    
     //
     public String toString() {
         // return "HorizontalLineSegment(lp: " + this.leftEndPoint.toString() + ", rp:" + this.rightEndPoint.toString() + ")";

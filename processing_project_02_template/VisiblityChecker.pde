@@ -28,8 +28,6 @@ class VisibilityChecker {
         
     }
 
-   
-    //
     public List<EndPoint> naiveVisibilityQuery(Point pointQ) {
         /*
             - desc:
@@ -124,9 +122,16 @@ class VisibilityChecker {
         */ 
         ArrayList<EndPoint> visibleEndpointsList = new ArrayList<EndPoint>();
 
-        VisibilityHeap eventsHeap = new VisibilityHeap(allEndPointsList, pointQ);
+        EventsHeap eHeap = new EventsHeap(allLineSegmentsList, pointQ);
+        SegmentsHeap sHeap = new SegmentsHeap(pointQ);
         
-        testAngle();
+        while (!eHeap.isEmpty()) {
+            EventsHeap.Event event = eHeap.extractMin();   
+            EndPoint visibleEndPoint = sHeap.processEvent(event);
+            if (visibleEndPoint != null) {
+                visibleEndpointsList.add(visibleEndPoint);    
+            }
+        }
         
         return visibleEndpointsList;
     }
@@ -151,29 +156,42 @@ class VisibilityChecker {
     }
 }
 
-class VisibilityHeap {
-    Event[] eventsHeap;
-    int size = 0;
+class EventsHeap {
+    private ArrayList<Event> heap = new ArrayList<>();
     
-    Set<Integer> lsIds = new HashSet();
+    //Set<Integer> lsIds = new HashSet();
     
     class Event {
         
         // birth event is true, death event is false
-        boolean isBirth;
-        float angleWithQ;
-        EndPoint endpoint;
+        private boolean isBirth;
+        private float angleWithQ;
+        private EndPoint endpoint;
         
-        Event(EndPoint endpoint, float angleWithQ) {
+        Event(EndPoint endpoint, float angleWithQ, boolean isBirth) {
             
             this.endpoint = endpoint;
             this.angleWithQ = angleWithQ;
-            if (!lsIds.contains(endpoint.getLineId())) {
-                isBirth = true;    
-            } else {
-                isBirth = false;
-            }
-            lsIds.add(endpoint.getLineId());
+            this.isBirth = isBirth;
+            //isBirth = 
+            //if (!lsIds.contains(endpoint.getLineId())) {
+            //    isBirth = true;    
+            //} else {
+            //    isBirth = false;
+            //}
+            //lsIds.add(endpoint.getLineId());
+        }
+        
+        public boolean isBirth() {
+            return isBirth;    
+        }
+        
+        public float angleWithQ() {
+            return angleWithQ;    
+        }
+        
+        public EndPoint getEndPoint() {
+            return endpoint;    
         }
         
         public String toString() {
@@ -183,18 +201,131 @@ class VisibilityHeap {
         }
     }
     
-    VisibilityHeap(List<EndPoint> allEndPointsList, Point pointQ) {
+    EventsHeap(List<LineSegment> allLineSegmentsList, Point pointQ) {
         
-        eventsHeap = new Event[allEndPointsList.size()];
-        
-        for (EndPoint ep : allEndPointsList) {
-            float angleWithQ = computeAngle(ep.getX() - pointQ.getX(), pointQ.getY() - ep.getY());
-            Point nep = (Point) ep;
-            insertIntoHeap(new Event(ep, angleWithQ));
+        for (LineSegment ls : allLineSegmentsList) {
+            EndPoint ep1 = ls.getFirstEndPoint();
+            EndPoint ep2 = ls.getSecondEndPoint();
+            float angleWithQ1 = computeAngle(ep1.getX() - pointQ.getX(), pointQ.getY() - ep1.getY());
+            float angleWithQ2 = computeAngle(ep2.getX() - pointQ.getX(), pointQ.getY() - ep2.getY());
+            Event event1;
+            Event event2;
+            if (angleWithQ1 < angleWithQ2) {
+                event1 = new Event(ep1, angleWithQ1, true);
+                event2 = new Event(ep2, angleWithQ2, false);
+            } else {
+                event2 = new Event(ep2, angleWithQ2, true);
+                event1 = new Event(ep1, angleWithQ1, false);
+            }
+            insertIntoHeap(event1);
+            insertIntoHeap(event2);
+        }
+        println(this.toString());
+    }
+    
+    void insertIntoHeap(Event event) {
+        // Add the event to the heap
+        heap.add(event);
+    
+        // Restore the heap property by moving the new event to its correct position
+        heapifyUp(heap.size() - 1);
+    }
+
+    private void heapifyUp(int index) {
+        while (index > 0) {
+            int parentIndex = (index - 1) / 2;
+            if (heap.get(index).angleWithQ < heap.get(parentIndex).angleWithQ) {
+                // Swap the current event with its parent
+                Event temp = heap.get(index);
+                heap.set(index, heap.get(parentIndex));
+                heap.set(parentIndex, temp);
+    
+                // Move to the parent index
+                index = parentIndex;
+            } else {
+                break;
+            }
         }
     }
     
-    private void insertIntoHeap(Event event) {
-            
+    Event extractMin() {
+        if (heap.size() == 0) {
+            return null; // Heap is empty
+        }
+    
+        // Take the root (smallest angle event)
+        Event root = heap.get(0);
+    
+        // Replace the root with the last event in the heap
+        Event lastEvent = heap.remove(heap.size() - 1);
+        if (heap.size() > 0) {
+            heap.set(0, lastEvent);
+            heapifyDown(0);
+        }
+    
+        return root;
     }
+
+    private void heapifyDown(int index) {
+        int leftChildIndex = 2 * index + 1;
+        int rightChildIndex = 2 * index + 2;
+        int smallestIndex = index;
+    
+        if (leftChildIndex < heap.size() && heap.get(leftChildIndex).angleWithQ < heap.get(smallestIndex).angleWithQ) {
+            smallestIndex = leftChildIndex;
+        }
+    
+        if (rightChildIndex < heap.size() && heap.get(rightChildIndex).angleWithQ < heap.get(smallestIndex).angleWithQ) {
+            smallestIndex = rightChildIndex;
+        }
+    
+        if (smallestIndex != index) {
+            // Swap the current event with the smallest of its children
+            Event temp = heap.get(index);
+            heap.set(index, heap.get(smallestIndex));
+            heap.set(smallestIndex, temp);
+    
+            // Recursively heapify the affected sub-tree
+            heapifyDown(smallestIndex);
+        }
+    }
+    
+    public boolean isEmpty() {
+        return heap.size() == 0;    
+    }
+
+    public String toString() {
+        String s = "";
+        for (Event e : heap) {
+            s += e.toString() + "\n";    
+        }
+        return s;
+    }
+}
+
+class SegmentsHeap {
+    private ArrayList<LineSegment> heap = new ArrayList<>();
+    private Point pointQ;
+    private LineSegment rayQ;
+    
+    SegmentsHeap(Point pointQ) {
+        this.pointQ = pointQ;
+    }
+    
+    EndPoint processEvent(EventsHeap.Event event) {
+        
+        rayQ = createRayQ(event);
+        
+        if (event.isBirth()) {
+                
+        }
+        int topLsId = heap.get(0).getLineId();
+        EndPoint ep = event.endpoint;
+        if (topLsId == ep.getLineId()) {
+            return ep;    
+        }
+        return null;
+    }
+    
+    
 }
