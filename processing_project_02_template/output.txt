@@ -12,9 +12,19 @@ q: i 21 18 17 13
 q: i 3 27 15 19
 q: % Q(10, 10)
 q: Q 10 29
-visibleEndPoints: 
-visibleEndPoints.size(): 4
+4 visibleEndPoints: 
 eid: 5.1
 eid: 6.0
 eid: 7.0
 eid: 7.1
+Q 16.0 1.0
+3 visibleEndPoints: 
+eid: 0.0
+eid: 0.1
+eid: 1.0
+Mouse inputted line segment: 9.0 1.0 14.0 3.0
+4 visibleEndPoints: 
+eid: 0.0
+eid: 1.0
+eid: 8.0
+eid: 8.1
