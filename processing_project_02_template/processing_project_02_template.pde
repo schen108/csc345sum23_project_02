@@ -667,7 +667,7 @@ void mousePressed() {
     }  else if (CUR_INPUT_MODE == 'q') {        
         currentQueryPointQ = new Point(savedMouseX, savedMouseY);
 
-
+        output.println("Q " + currentQueryPointQ.getX() + " " + currentQueryPointQ.getY());
 
         visibilityChecker.setInputEndpointsList(allEndPointsList);
         
