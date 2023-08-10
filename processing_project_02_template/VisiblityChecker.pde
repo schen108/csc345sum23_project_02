@@ -315,11 +315,15 @@ class SegmentsHeap {
     EndPoint processEvent(EventsHeap.Event event) {
         
         rayQ = createRayQ(event);
+        LineSegment eventLS = inputLSList.get(event.getEndPoint().getLineId());
         
         if (event.isBirth()) {
-                
+            insertIntoHeap(eventLS);
         }
         int topLsId = heap.get(0).getLineId();
+        if (!event.isBirth()) {
+            removeFromHeap(eventLS);
+        }
         EndPoint ep = event.endpoint;
         if (topLsId == ep.getLineId()) {
             return ep;    
@@ -327,5 +331,55 @@ class SegmentsHeap {
         return null;
     }
     
+    private LineSegment createRayQ(EventsHeap.Event event) {
+        // Direction vector from pointQ to the event's endpoint
+        float dx = event.getEndPoint().x - pointQ.x;
+        float dy = event.getEndPoint().y - pointQ.y;
     
+        // Normalize the direction vector
+        float magnitude = sqrt(dx*dx + dy*dy);
+        dx = dx / magnitude;
+        dy = dy / magnitude;
+    
+        // Extend the direction vector to the desired length (100 in this case)
+        dx *= 100;
+        dy *= 100;
+    
+        // Create the new endpoint for the ray
+        EndPoint rayEndPoint = new EndPoint(-1, -1, pointQ.x + dx, pointQ.y + dy);
+        EndPoint endPointQ = new EndPoint(-1, -1, pointQ.getX(), pointQ.getY());
+        inputLSList.add(new LineSegment(-1, endPointQ, rayEndPoint));
+        // Return the new LineSegment representing the ray
+        return new LineSegment(-1, endPointQ, rayEndPoint);
+    }
+    
+    private float getIntersectDistance(LineSegment ls) {
+        Point intersectPoint = intersection(rayQ, ls);
+        allEndPointsList.add(new EndPoint(-1, -1, intersectPoint.getX(), intersectPoint.getY()));
+        return sqrt(pow(2, pointQ.getX()-intersectPoint.getX()) + pow(2, pointQ.getY()-intersectPoint.getY()));
+    }
+
+    void insertIntoHeap(LineSegment segment) {
+    // Add the segment to the heap
+    heap.add(segment);
+
+    // Restore the heap property by moving the new segment to its correct position
+    int index = heap.size() - 1;
+    while (index > 0) {
+        int parentIndex = (index - 1) / 2;
+        LineSegment currentIndexSegment = heap.get(index);
+        LineSegment parentIndexSegment = heap.get(parentIndex);
+
+        if (getIntersectDistance(currentIndexSegment) < getIntersectDistance(parentIndexSegment)) {
+            // Swap the current segment with its parent
+            heap.set(index, parentIndexSegment);
+            heap.set(parentIndex, currentIndexSegment);
+            index = parentIndex;
+        } else {
+            break;
+        }
+    }
+}
+
+
 }

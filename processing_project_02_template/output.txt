@@ -12,3 +12,8 @@ q: i 21 18 17 13
 q: i 3 27 15 19
 q: % Q(10, 10)
 q: Q 10 29
+4 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 7.1
+eid: 7.0
