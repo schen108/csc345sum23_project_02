@@ -658,7 +658,8 @@ void mousePressed() {
             
             visibilityChecker.setInputEndpointsList(allEndPointsList);
             // using old/current Q
-            List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
+            //List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
+            List<EndPoint> visibleEndPoints = visibilityChecker.query(currentQueryPointQ);
             
             outputVisibleEndPoints(visibleEndPoints);
 
@@ -672,7 +673,8 @@ void mousePressed() {
 
         visibilityChecker.setInputEndpointsList(allEndPointsList);
         
-        List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
+        //List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
+        List<EndPoint> visibleEndPoints = visibilityChecker.query(currentQueryPointQ);
         
         outputVisibleEndPoints(visibleEndPoints);
 

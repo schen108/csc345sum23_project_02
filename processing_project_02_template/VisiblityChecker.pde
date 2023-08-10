@@ -115,6 +115,10 @@ class VisibilityChecker {
         return false;
     }
 
+    /*
+        Processes all the visible endpoints from the given query point and returns
+        them in a list.
+    */
     public List<EndPoint> query(Point pointQ) {
         // [todo:mn] implement
         /*
@@ -132,7 +136,7 @@ class VisibilityChecker {
                 visibleEndpointsList.add(visibleEndPoint);    
             }
         }
-        
+
         return visibleEndpointsList;
     }
 
@@ -156,6 +160,9 @@ class VisibilityChecker {
     }
 }
 
+/*
+    Heap class used to order the events detected at endpoints when processing the 
+*/
 class EventsHeap {
     private ArrayList<Event> heap = new ArrayList<>();
     
@@ -204,12 +211,23 @@ class EventsHeap {
     EventsHeap(List<LineSegment> allLineSegmentsList, Point pointQ) {
         
         for (LineSegment ls : allLineSegmentsList) {
-            EndPoint ep1 = ls.getFirstEndPoint();
-            EndPoint ep2 = ls.getSecondEndPoint();
-            float angleWithQ1 = computeAngle(ep1.getX() - pointQ.getX(), pointQ.getY() - ep1.getY());
-            float angleWithQ2 = computeAngle(ep2.getX() - pointQ.getX(), pointQ.getY() - ep2.getY());
-            Event event1;
-            Event event2;
+            createEvents(ls, pointQ);
+        }
+        println(this.toString());
+    }
+    
+    /*
+        Takes a line segment and creates birth/death events from its endpoints.
+    */
+    void createEvents(LineSegment ls, Point pointQ) {
+    
+        EndPoint ep1 = ls.getFirstEndPoint();
+        EndPoint ep2 = ls.getSecondEndPoint();
+        float angleWithQ1 = computeAngle(ep1.getX() - pointQ.getX(), pointQ.getY() - ep1.getY());
+        float angleWithQ2 = computeAngle(ep2.getX() - pointQ.getX(), pointQ.getY() - ep2.getY());
+        Event event1;
+        Event event2;
+        if (angleWithQ2 - angleWithQ1 < 180) {
             if (angleWithQ1 < angleWithQ2) {
                 event1 = new Event(ep1, angleWithQ1, true);
                 event2 = new Event(ep2, angleWithQ2, false);
@@ -217,12 +235,23 @@ class EventsHeap {
                 event2 = new Event(ep2, angleWithQ2, true);
                 event1 = new Event(ep1, angleWithQ1, false);
             }
-            insertIntoHeap(event1);
-            insertIntoHeap(event2);
+        } else {
+            if (angleWithQ1 > angleWithQ2) {
+                event1 = new Event(ep1, angleWithQ1, true);
+                event2 = new Event(ep2, angleWithQ2, false);
+            } else {
+                event2 = new Event(ep2, angleWithQ2, true);
+                event1 = new Event(ep1, angleWithQ1, false);  
+            }
         }
-        println(this.toString());
+        
+        insertIntoHeap(event1);
+        insertIntoHeap(event2);
     }
     
+    /*
+        Inserts an event into the heap.
+    */
     void insertIntoHeap(Event event) {
         // Add the event to the heap
         heap.add(event);
@@ -231,6 +260,9 @@ class EventsHeap {
         heapifyUp(heap.size() - 1);
     }
 
+    /*
+        HeapifyUp method used to maintain the heap structure when adding an event.
+    */
     private void heapifyUp(int index) {
         while (index > 0) {
             int parentIndex = (index - 1) / 2;
@@ -266,6 +298,9 @@ class EventsHeap {
         return root;
     }
 
+    /*
+        HeapifyDown method used to maintain the heap structure when extracting the top event.
+    */
     private void heapifyDown(int index) {
         int leftChildIndex = 2 * index + 1;
         int rightChildIndex = 2 * index + 2;
@@ -303,6 +338,10 @@ class EventsHeap {
     }
 }
 
+/*
+    Heap class used to maintain an order of the segments in the order of how close they are
+    to the query point.
+*/
 class SegmentsHeap {
     private ArrayList<LineSegment> heap = new ArrayList<>();
     private Point pointQ;
@@ -312,6 +351,10 @@ class SegmentsHeap {
         this.pointQ = pointQ;
     }
     
+    /*
+        Processes an event extracted from the EventsHeap, causing
+        a line segment to either be added or removed from the heap.
+    */
     EndPoint processEvent(EventsHeap.Event event) {
         
         rayQ = createRayQ(event);
@@ -319,6 +362,10 @@ class SegmentsHeap {
         
         if (event.isBirth()) {
             insertIntoHeap(eventLS);
+        }
+        if (heap.isEmpty()) {
+            println("error");
+            return null;
         }
         int topLsId = heap.get(0).getLineId();
         if (!event.isBirth()) {
@@ -331,6 +378,9 @@ class SegmentsHeap {
         return null;
     }
     
+    /*
+        Creates the ray extending from the query point in the direction of the given event endpoint.
+    */
     private LineSegment createRayQ(EventsHeap.Event event) {
         // Direction vector from pointQ to the event's endpoint
         float dx = event.getEndPoint().x - pointQ.x;
@@ -341,45 +391,99 @@ class SegmentsHeap {
         dx = dx / magnitude;
         dy = dy / magnitude;
     
-        // Extend the direction vector to the desired length (100 in this case)
-        dx *= 100;
-        dy *= 100;
+        // Get the extension length of the ray
+        dx *= grid_side_length;
+        dy *= grid_side_length;
     
         // Create the new endpoint for the ray
         EndPoint rayEndPoint = new EndPoint(-1, -1, pointQ.x + dx, pointQ.y + dy);
         EndPoint endPointQ = new EndPoint(-1, -1, pointQ.getX(), pointQ.getY());
-        inputLSList.add(new LineSegment(-1, endPointQ, rayEndPoint));
+        //inputLSList.add(new LineSegment(-1, endPointQ, rayEndPoint));
         // Return the new LineSegment representing the ray
         return new LineSegment(-1, endPointQ, rayEndPoint);
     }
     
+    /*
+        Gets the distance at which a given line segment and the current query ray (rayQ)
+        intersect.
+    */
     private float getIntersectDistance(LineSegment ls) {
         Point intersectPoint = intersection(rayQ, ls);
-        allEndPointsList.add(new EndPoint(-1, -1, intersectPoint.getX(), intersectPoint.getY()));
+        //allEndPointsList.add(new EndPoint(-1, -1, intersectPoint.getX(), intersectPoint.getY()));
         return sqrt(pow(2, pointQ.getX()-intersectPoint.getX()) + pow(2, pointQ.getY()-intersectPoint.getY()));
     }
 
+    /*
+        Inserts a segment into the heap in order of their intersection distance.
+    */
     void insertIntoHeap(LineSegment segment) {
-    // Add the segment to the heap
-    heap.add(segment);
-
-    // Restore the heap property by moving the new segment to its correct position
-    int index = heap.size() - 1;
-    while (index > 0) {
-        int parentIndex = (index - 1) / 2;
-        LineSegment currentIndexSegment = heap.get(index);
-        LineSegment parentIndexSegment = heap.get(parentIndex);
-
-        if (getIntersectDistance(currentIndexSegment) < getIntersectDistance(parentIndexSegment)) {
-            // Swap the current segment with its parent
-            heap.set(index, parentIndexSegment);
-            heap.set(parentIndex, currentIndexSegment);
-            index = parentIndex;
-        } else {
-            break;
+        // Add the segment to the heap
+        heap.add(segment);
+    
+        // Restore the heap property by moving the new segment to its correct position
+        int index = heap.size() - 1;
+        while (index > 0) {
+            int parentIndex = (index - 1) / 2;
+            LineSegment currentIndexSegment = heap.get(index);
+            LineSegment parentIndexSegment = heap.get(parentIndex);
+    
+            if (getIntersectDistance(currentIndexSegment) < getIntersectDistance(parentIndexSegment)) {
+                // Swap the current segment with its parent
+                swap(parentIndex, index);
+                index = parentIndex;
+            } else {
+                break;
+            }
         }
     }
-}
+    
+    /*
+        Removes a line segment from the heap.
+    */
+    void removeFromHeap(LineSegment segment) {
+        int index = heap.indexOf(segment);
+        if (index == -1) {
+            return; // Segment not found in the heap
+        }
+    
+        // Swap the segment with the last element in the heap
+        int lastIndex = heap.size() - 1;
+        swap(index, lastIndex);
+        heap.remove(lastIndex);
+    
+        // Restore the heap property by percolating down
+        percolateDown(index);
+    }
 
-
+    /*
+        Swaps two segments in the heap.
+    */
+    void swap(int i, int j) {
+        LineSegment temp = heap.get(i);
+        heap.set(i, heap.get(j));
+        heap.set(j, temp);
+    }
+    
+    /*
+        Percolates down from a given index in the heap to maintain the
+        heap structure after removing from the middle of the heap.
+    */
+    void percolateDown(int index) {
+        int leftChildIndex = 2 * index + 1;
+        int rightChildIndex = 2 * index + 2;
+        int smallestChildIndex = index;
+    
+        if (leftChildIndex < heap.size() && getIntersectDistance(heap.get(leftChildIndex)) < getIntersectDistance(heap.get(smallestChildIndex))) {
+            smallestChildIndex = leftChildIndex;
+        }
+    
+        if (rightChildIndex < heap.size() && getIntersectDistance(heap.get(rightChildIndex)) < getIntersectDistance(heap.get(smallestChildIndex))) {
+            smallestChildIndex = rightChildIndex;
+        }
+    
+        if (smallestChildIndex != index) {
+            swap(index, smallestChildIndex);
+            percolateDown(smallestChildIndex);
+        }
+    }
 }

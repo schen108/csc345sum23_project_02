@@ -17,3 +17,215 @@ eid: 5.1
 eid: 6.0
 eid: 7.1
 eid: 7.0
+Q 20.0 25.0
+9 visibleEndPoints: 
+eid: 5.1
+eid: 5.0
+eid: 6.0
+eid: 6.1
+eid: 2.0
+eid: 0.1
+eid: 3.1
+eid: 7.1
+eid: 7.0
+Q 25.0 27.0
+12 visibleEndPoints: 
+eid: 5.1
+eid: 5.0
+eid: 1.0
+eid: 2.1
+eid: 6.0
+eid: 6.1
+eid: 2.0
+eid: 3.1
+eid: 3.0
+eid: 4.0
+eid: 7.1
+eid: 7.0
+Q 16.0 27.0
+6 visibleEndPoints: 
+eid: 5.1
+eid: 5.0
+eid: 6.0
+eid: 6.1
+eid: 7.1
+eid: 7.0
+Q 13.0 26.0
+5 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 6.1
+eid: 7.1
+eid: 7.0
+Q 12.0 23.0
+4 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 7.1
+eid: 7.0
+Q 17.0 26.0
+6 visibleEndPoints: 
+eid: 5.1
+eid: 5.0
+eid: 6.0
+eid: 6.1
+eid: 7.1
+eid: 7.0
+Q 24.0 26.0
+12 visibleEndPoints: 
+eid: 5.1
+eid: 5.0
+eid: 1.0
+eid: 2.1
+eid: 6.0
+eid: 6.1
+eid: 2.0
+eid: 3.1
+eid: 3.0
+eid: 4.0
+eid: 7.1
+eid: 7.0
+Q 14.0 27.0
+5 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 6.1
+eid: 7.1
+eid: 7.0
+Q 11.0 27.0
+4 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 7.1
+eid: 7.0
+Q 6.0 28.0
+4 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 7.1
+eid: 7.0
+Q 4.0 27.0
+4 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 7.1
+eid: 7.0
+Q 26.0 27.0
+1 visibleEndPoints: 
+eid: 5.1
+Q 22.0 27.0
+12 visibleEndPoints: 
+eid: 5.1
+eid: 5.0
+eid: 1.0
+eid: 2.1
+eid: 6.0
+eid: 6.1
+eid: 2.0
+eid: 0.1
+eid: 3.1
+eid: 4.0
+eid: 7.1
+eid: 7.0
+Q 28.0 26.0
+12 visibleEndPoints: 
+eid: 5.0
+eid: 5.1
+eid: 1.0
+eid: 2.1
+eid: 6.1
+eid: 6.0
+eid: 2.0
+eid: 3.1
+eid: 3.0
+eid: 4.0
+eid: 7.1
+eid: 7.0
+Q 29.0 7.0
+9 visibleEndPoints: 
+eid: 0.0
+eid: 1.0
+eid: 1.1
+eid: 2.0
+eid: 2.1
+eid: 4.0
+eid: 6.1
+eid: 5.0
+eid: 5.1
+Q 29.0 8.0
+4 visibleEndPoints: 
+eid: 0.0
+eid: 1.0
+eid: 1.1
+eid: 2.1
+Q 1.0 8.0
+6 visibleEndPoints: 
+eid: 2.1
+eid: 7.0
+eid: 7.1
+eid: 6.0
+eid: 5.1
+eid: 5.0
+Q 0.0 30.0
+12 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 7.1
+eid: 7.0
+eid: 6.1
+eid: 1.0
+eid: 2.1
+eid: 4.1
+eid: 4.0
+eid: 1.1
+eid: 3.1
+eid: 3.0
+Q 0.0 30.0
+12 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 7.1
+eid: 7.0
+eid: 6.1
+eid: 1.0
+eid: 2.1
+eid: 4.1
+eid: 4.0
+eid: 1.1
+eid: 3.1
+eid: 3.0
+Q 5.0 28.0
+4 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 7.1
+eid: 7.0
+Q 2.0 30.0
+8 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 7.1
+eid: 7.0
+eid: 4.0
+eid: 0.1
+eid: 3.1
+eid: 3.0
+Q 3.0 30.0
+4 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 7.1
+eid: 7.0
+Q 3.0 32.0
+4 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 7.1
+eid: 7.0
+Q 12.0 30.0
+5 visibleEndPoints: 
+eid: 5.1
+eid: 6.0
+eid: 6.1
+eid: 7.1
+eid: 7.0
