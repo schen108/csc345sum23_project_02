@@ -660,7 +660,6 @@ void mousePressed() {
             
             outputVisibleEndPoints(visibleEndPoints);
 
-
             // task: showing the visible points by drawing some blue lines from Q to those points
             currentVisibleEndPoints = visibleEndPoints;
         }
@@ -675,7 +674,6 @@ void mousePressed() {
         
         outputVisibleEndPoints(visibleEndPoints);
 
-        
         currentVisibleEndPoints = visibleEndPoints;
     }
 }
