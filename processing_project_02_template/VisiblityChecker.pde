@@ -117,12 +117,15 @@ class VisibilityChecker {
         return false;
     }
 
-    public List<Point> query(Point pointQ) {
+    public List<EndPoint> query(Point pointQ) {
         // [todo:mn] implement
         /*
             O ( n log n )
-        */        
-        return null;
+        */ 
+        ArrayList<EndPoint> visibleEndpointsList = new ArrayList<EndPoint>();
+
+        
+        return visibleEndpointsList;
     }
 
     //
@@ -145,3 +148,9 @@ class VisibilityChecker {
     }
 }
 
+class EventsHeap {
+    EndPoint[] heap;
+    
+    EventsHeap() {
+    }
+}

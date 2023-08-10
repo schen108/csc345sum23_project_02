@@ -514,15 +514,17 @@ void processQueries() {
             
             visibilityChecker.setInputEndpointsList(allEndPointsList);
             // naive query
-            List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
+            //List<EndPoint> visibleEndPoints = visibilityChecker.naiveVisibilityQuery(currentQueryPointQ);
+            
+            // actual query
+            List<EndPoint> visibleEndPoints = visibilityChecker.query(currentQueryPointQ);
 
             outputVisibleEndPoints(visibleEndPoints);
 
             // task: showing the visible points by drawing some blue lines from Q to those points
             currentVisibleEndPoints = visibleEndPoints;
             
-            // actual query
-            // visibilityChecker.query(currentQueryPointQ);
+            
 
 
             
