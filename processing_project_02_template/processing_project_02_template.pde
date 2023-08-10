@@ -1,6 +1,14 @@
 /*
-Author: Md Moyeen Uddin
-moyeen@arizona.edu
+Used template code
+
+This file creates a grid of line segments from an input file and mouse inputs.
+It also takes a query point and reports all of the line segments visible from the 
+given query point.
+
+The file assumes that all the endpoints are above the query point and that
+no segments are colinear with the query point (including if both endpoints are at
+the same location). It also assumes that no two segments cross each other.
+
 */
 
 // Global variables (fixed)
@@ -422,7 +430,6 @@ int sr(int x) {
 void processQueries() {
     output.println("processQueries(): ");
 
-    int lineId = 0;
     for (int qid = 0; qid < queryStringsList.size(); qid++) {
         String str = queryStringsList.get(qid);
         
@@ -459,7 +466,6 @@ void processQueries() {
             );
             //
             inputLSList.add(lineSegment);
-            lineId += 1;
 
             // visibilityChecker.setInputEndpointsList(allEndPointsList);
             visibilityChecker.addToInputEndpointsList(firstEndPoint);

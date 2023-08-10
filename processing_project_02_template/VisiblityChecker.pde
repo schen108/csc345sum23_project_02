@@ -2,8 +2,11 @@
 Author: Md Moyeen Uddin
 moyeen@arizona.edu
 
-- note:
-    - 
+Used template code
+Edited by CJ Chen
+
+This file contains the VisibilityChecker class and the heap classes
+necessary for it to run the query method in O(nlogn) time.
 
 */
 
