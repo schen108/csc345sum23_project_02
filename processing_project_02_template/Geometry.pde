@@ -329,11 +329,11 @@ public Point intersection(LineSegment ls_a, LineSegment ls_b) {
 
 
 void testAngle() {
-    float x1 = 100; // Replace these values with your desired point's x and y coordinates
-    float y1 = 200;
+    float x1 = 10; // Replace these values with your desired point's x and y coordinates
+    float y1 = 29;
 
-    float x2 = 300; // Replace these values with the origin point's x and y coordinates
-    float y2 = 200;
+    float x2 = 26; // Replace these values with the origin point's x and y coordinates
+    float y2 = 18;
 
     float angle = computeAngle(x1 - x2, y1 - y2);
     println("Angle between 0 and 360 degrees: " + angle);

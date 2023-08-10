@@ -124,6 +124,9 @@ class VisibilityChecker {
         */ 
         ArrayList<EndPoint> visibleEndpointsList = new ArrayList<EndPoint>();
 
+        VisibilityHeap eventsHeap = new VisibilityHeap(allEndPointsList, pointQ);
+        
+        testAngle();
         
         return visibleEndpointsList;
     }
@@ -148,9 +151,50 @@ class VisibilityChecker {
     }
 }
 
-class EventsHeap {
-    EndPoint[] heap;
+class VisibilityHeap {
+    Event[] eventsHeap;
+    int size = 0;
     
-    EventsHeap() {
+    Set<Integer> lsIds = new HashSet();
+    
+    class Event {
+        
+        // birth event is true, death event is false
+        boolean isBirth;
+        float angleWithQ;
+        EndPoint endpoint;
+        
+        Event(EndPoint endpoint, float angleWithQ) {
+            
+            this.endpoint = endpoint;
+            this.angleWithQ = angleWithQ;
+            if (!lsIds.contains(endpoint.getLineId())) {
+                isBirth = true;    
+            } else {
+                isBirth = false;
+            }
+            lsIds.add(endpoint.getLineId());
+        }
+        
+        public String toString() {
+            String isBirth = this.isBirth ? "birth" : "death";
+            
+            return  endpoint.toString() + ", " + angleWithQ + ", " + isBirth;
+        }
+    }
+    
+    VisibilityHeap(List<EndPoint> allEndPointsList, Point pointQ) {
+        
+        eventsHeap = new Event[allEndPointsList.size()];
+        
+        for (EndPoint ep : allEndPointsList) {
+            float angleWithQ = computeAngle(ep.getX() - pointQ.getX(), pointQ.getY() - ep.getY());
+            Point nep = (Point) ep;
+            insertIntoHeap(new Event(ep, angleWithQ));
+        }
+    }
+    
+    private void insertIntoHeap(Event event) {
+            
     }
 }
